@@ -1,0 +1,9 @@
+[Unit]
+Description=Control raspberry cpu temperature by automatically switch on/off fan
+
+[Service]
+ExecStart=/usr/bin/fan-control.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
