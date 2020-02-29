@@ -3,6 +3,9 @@ import * as fs from 'fs'
 import * as util from 'util'
 import { exec } from 'child_process'
 
+const configFile = process.argv[2]
+const CONFIG = require(configFile)
+
 // util
 const readFile = util.promisify(fs.readFile)
 async function wait (millisec: number) {
@@ -13,8 +16,8 @@ async function wait (millisec: number) {
 
 
 // tem
-const TEM_MAX = 60
-const TEM_MIN = 45
+const TEM_MAX = CONFIG.TEM_MAX || 60
+const TEM_MIN = CONFIG.TEM_MIN || 45
 
 async function readTem(): Promise<number> {
   const TEM_FILE = '/sys/class/thermal/thermal_zone0/temp'
@@ -24,7 +27,8 @@ async function readTem(): Promise<number> {
 
 // fan
 const GPIO_CMD = '/usr/bin/gpio'
-const WIRE_PI_PIN = 1
+const WIRE_PI_PIN = CONFIG.WIRE_PI_PIN || 1
+
 async function fanInit (): Promise<void> {
   return new Promise((resolve, reject) => {
     exec(`${GPIO_CMD} mode ${WIRE_PI_PIN} output`, (error) => {
@@ -62,8 +66,8 @@ async function fanRelease (): Promise<void> {
 }
 
 // business
-const SAMPLE_MAX = 3
-const SAMPLE_PERIOD = 3000
+const SAMPLE_MAX = CONFIG.SAMPLE_MAX || 3
+const SAMPLE_PERIOD = CONFIG.SAMPLE_PERIOD || 5000
 let targetTem: number | null = null
 const temSamples: number[] = []
 

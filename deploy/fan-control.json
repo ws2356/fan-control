@@ -1,0 +1,7 @@
+{
+  "TEM_MAX": 60,
+  "TEM_MIN": 45,
+  ""WIRE_PI_PIN": 1,
+  "SAMPLE_MAX": 3,
+  "SAMPLE_PERIOD": 5000
+}
