@@ -992,7 +992,12 @@
   "resolved" "https://registry.npm.taobao.org/pify/download/pify-2.3.0.tgz"
   "version" "2.3.0"
 
-"pigpio@*", "pigpio@^3.3.1":
+"pigpio-client@^1.5.2":
+  "integrity" "sha512-s2NIPsbQRybxdcTJjjtmYvptd+pXqVX4pLHLxUaoMqmyrYS8kf3vKKQoMV/FTQ3PbtuWR5Tll+YAxJLU8EJYow=="
+  "resolved" "https://registry.npmmirror.com/pigpio-client/-/pigpio-client-1.5.2.tgz"
+  "version" "1.5.2"
+
+"pigpio@*":
   "integrity" "sha512-z7J55K14IwWkA+oW5JHzWcgwThFAuJ7IzV3A2//yRm4jJ2DTU0DHIy91DB0siOi12rvvlrIhRetEuAo0ztF/vQ=="
   "resolved" "https://registry.npmmirror.com/pigpio/-/pigpio-3.3.1.tgz"
   "version" "3.3.1"

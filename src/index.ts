@@ -2,13 +2,15 @@
 import * as fs from 'fs'
 import * as util from 'util'
 import { exec } from 'child_process'
-import * as gpio from 'pigpio'
+import { gpio } from 'pigpio-client'
+// const pigpio = require('pigpio-client').pigpio({host: 'raspberryHostIP'});
+const pigpio = gpio({ host: '127.0.0.1' })
 
 const configFile = process.argv[2]
 const CONFIG = require(configFile)
 
 
-const fanPin = new gpio.Gpio(18, {mode: gpio.Gpio.OUTPUT});
+const fanPin = pigpio.gpio(CONFIG.PIN_ID || 18)
 
 // util
 const readFile = util.promisify(fs.readFile)
@@ -30,8 +32,14 @@ async function readTem(): Promise<number> {
 }
 
 // fan
+const ready = new Promise((resolve, reject) => {
+  pigpio.once('connected', resolve);
+  pigpio.once('error', reject);
+})
+
 async function fanInit (): Promise<void> {
   return new Promise((resolve, reject) => {
+    fanPin.modeSet('output')
     resolve()
     // exec(`${GPIO_CMD} mode ${WIRE_PI_PIN} output`, (error) => {
     //   if (error) {
@@ -45,7 +53,7 @@ async function fanInit (): Promise<void> {
 
 async function fanSwitch (isOn: boolean): Promise<void> {
   return new Promise((resolve, reject) => {
-    fanPin.digitalWrite(isOn ? 1 : 0)
+    fanPin.write(isOn ? 1 : 0)
     resolve()
     // exec(`${GPIO_CMD} write ${WIRE_PI_PIN} ${isOn ? 1 : 0}`, (error) => {
     //   if (error) {
