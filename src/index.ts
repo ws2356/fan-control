@@ -2,9 +2,13 @@
 import * as fs from 'fs'
 import * as util from 'util'
 import { exec } from 'child_process'
+import * as gpio from 'pigpio'
 
 const configFile = process.argv[2]
 const CONFIG = require(configFile)
+
+
+const fanPin = new gpio.Gpio(18, {mode: gpio.Gpio.OUTPUT});
 
 // util
 const readFile = util.promisify(fs.readFile)
@@ -26,42 +30,43 @@ async function readTem(): Promise<number> {
 }
 
 // fan
-const GPIO_CMD = '/usr/bin/gpio'
-const WIRE_PI_PIN = CONFIG.WIRE_PI_PIN || 1
-
 async function fanInit (): Promise<void> {
   return new Promise((resolve, reject) => {
-    exec(`${GPIO_CMD} mode ${WIRE_PI_PIN} output`, (error) => {
-      if (error) {
-        reject(error)
-      } else {
-        resolve()
-      }
-    })
+    resolve()
+    // exec(`${GPIO_CMD} mode ${WIRE_PI_PIN} output`, (error) => {
+    //   if (error) {
+    //     reject(error)
+    //   } else {
+    //     resolve()
+    //   }
+    // })
   })
 }
 
 async function fanSwitch (isOn: boolean): Promise<void> {
   return new Promise((resolve, reject) => {
-    exec(`${GPIO_CMD} write ${WIRE_PI_PIN} ${isOn ? 1 : 0}`, (error) => {
-      if (error) {
-        reject(error)
-      } else {
-        resolve()
-      }
-    })
+    fanPin.digitalWrite(isOn ? 1 : 0)
+    resolve()
+    // exec(`${GPIO_CMD} write ${WIRE_PI_PIN} ${isOn ? 1 : 0}`, (error) => {
+    //   if (error) {
+    //     reject(error)
+    //   } else {
+    //     resolve()
+    //   }
+    // })
   })
 }
 
 async function fanRelease (): Promise<void> {
   return new Promise((resolve, reject) => {
-    exec(`${GPIO_CMD} mode ${WIRE_PI_PIN} input`, (error) => {
-      if (error) {
-        reject(error)
-      } else {
-        resolve()
-      }
-    })
+    resolve()
+    // exec(`${GPIO_CMD} mode ${WIRE_PI_PIN} input`, (error) => {
+    //   if (error) {
+    //     reject(error)
+    //   } else {
+    //     resolve()
+    //   }
+    // })
   })
 }
 
